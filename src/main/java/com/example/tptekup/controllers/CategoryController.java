@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -15,7 +16,7 @@ public class CategoryController {
     @Autowired
     CategoryService categoryService;
     @RequestMapping("/addCategory")
-    public String addProduct(Model model){
+    public String addCategory(Model model){
         Category category=new Category();
         model.addAttribute(("CategoryForm"),category );
         return "create/new_category";
@@ -30,6 +31,11 @@ public class CategoryController {
     public String listeCategorys(Model model){
 
         model.addAttribute("listCategories",categoryService.getAll());
-        return "liste/liste_categorys";
+        return "liste/liste_categories";
+    }
+    @RequestMapping("/deletecat/{id}")
+    public String deleteCategory(@PathVariable("id") long id){
+        categoryService.DeleteCatg(id);
+        return "redirect:/allcat";
     }
 }

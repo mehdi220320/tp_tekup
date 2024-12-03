@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -24,7 +25,18 @@ public class ProviderController {
     @RequestMapping(value = "/saveProvider",method = RequestMethod.POST)
     public String saveProvider(@ModelAttribute("ProductForm") Provider provider){
         providerService.CreateProv(provider);
-        return "redirect:/all";
+        return "redirect:/allProviders";
+    }
+    @RequestMapping("/allProviders")
+    public String listeProviders(Model model){
+
+        model.addAttribute("listProviders",providerService.getAll());
+        return "liste/liste_providers";
+    }
+    @RequestMapping("/deleteprov/{id}")
+    public String deleteProvider(@PathVariable("id") long id){
+        providerService.DeleteProv(id);
+        return "redirect:/allProviders";
     }
 
 }

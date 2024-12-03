@@ -5,10 +5,7 @@ import com.example.tptekup.Services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,6 +31,22 @@ public class ProductController {
         model.addAttribute("listProducts",productService.getAll());
         return "liste/liste_products";
     }
+    @RequestMapping("/deleteprod/{id}")
+    public String deleteProduct(@PathVariable("id") long id){
+        productService.DeleteProd(id);
+        return "redirect:/all";
+    }
+    @GetMapping("/edit/{id}")
+    public String showUpdateForm(@PathVariable("id") long id, Model model) {
+        Product product = productService.GetbyId(id);
+        model.addAttribute("product", product);
+        return "update_product";
+    }
 
+    @PostMapping("/update/{id}")
+    public String updateProduct(@PathVariable("id") long id, Product product) {
+        productService.updateProd(product);
+        return "redirect:/all";
+    }
 
 }
